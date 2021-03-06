@@ -16,7 +16,6 @@ def print_video_comment(no, video_id, next_page_token):
         'textFormat': 'plaintext',
         'maxResults': 100,
     }
-    tmp = [[]]
     if next_page_token is not None:
         params['pageToken'] = next_page_token
     response = requests.get(URL + 'commentThreads', params=params)
@@ -25,8 +24,8 @@ def print_video_comment(no, video_id, next_page_token):
     for comment_info in resource['items']:
         text = comment_info['snippet']['topLevelComment']['snippet']['textDisplay']
         if text[-2:] == 'そう':
-            tmp[0] = text.replace('\n', '')
-            writer.writerow(tmp)
+            text = text.replace('\n', '')
+            f.write(text + '\n')
             # print(text)
         parentId = comment_info['snippet']['topLevelComment']['id']
         no = no + 1
@@ -36,7 +35,5 @@ def print_video_comment(no, video_id, next_page_token):
 
 video_id = VIDEO_ID
 no = 1
-with open('comment.csv', 'w') as f:
-    writer = csv.writer(f)
-    writer.writerow(['comment'])
+with open('comment.txt', 'w') as f:
     print_video_comment(no, video_id, None)
