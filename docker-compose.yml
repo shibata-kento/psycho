@@ -1,0 +1,11 @@
+version: '3'
+services:
+  ai_bot: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bot_notebook
+    ports:
+    - "8080:8888"
+    volumes:
+    - .:/workdir
